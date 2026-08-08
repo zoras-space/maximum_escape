@@ -324,6 +324,7 @@ class Game:
                 )
         elif direction == "towards door":
             self.location = "door"
+            print(ASCII_ART["Door"].strip("\n"))
             print(f"You walk back towards the {ORANGE}locked door{RESET}.")
         else:
             print(
@@ -387,6 +388,8 @@ Somewhere in this room are the clues you need to escape the dread of coding thro
             print(f"{RED}INCORRECT CODE.{RESET} Keep exploring the room.")
             return False
 
+        victory_art = ASCII_ART["Victory"].strip("\n")
+        print(f"{GREEN}{victory_art}{RESET}\n")
         print(f"""{GREEN}{BOLD}ACCESS GRANTED.{RESET}
 
 {GREEN}The door clicks open.{RESET}
