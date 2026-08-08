@@ -3,7 +3,8 @@ import readline
 
 RED = "\033[31m"
 GREEN = "\033[32m"
-YELLOW = "\033[33m"
+BROWN = "\033[33m"
+YELLOW = "\033[93m"
 ORANGE = "\033[38;5;208m"
 CYAN = "\033[36m"
 BLUE = "\033[34m"
@@ -90,7 +91,7 @@ class Game:
                 ),
                 "Stone cold.\n\nThis coffee died hours ago.",
                 "Strong enough to compile your thoughts.",
-                YELLOW,
+                BROWN,
             ),
             GameObject(
                 "Rubber Duck",
