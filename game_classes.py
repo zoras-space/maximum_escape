@@ -1,6 +1,5 @@
 class GameObject:
-
-    def __init__(self, name: str, appearance: str, feel: str, smell: str):
+    def __init__(self, name: str, appearance: str, feel: str, smell: str) -> None:
         self.name = name
         self.appearance = appearance
         self.feel = feel
@@ -32,182 +31,242 @@ class Room:
 
 
 class Game:
-    def __init__(self):
-        self.attempts = 0
+    def __init__(self) -> None:
         objects = self.create_objects()
         self.room = Room(524, objects)
+        self.location = "door"
+
+        self.left_objects = objects[0:3]
+        self.right_objects = objects[3:6]
+        self.away_objects = objects[6:9]
 
     def create_objects(self) -> list[GameObject]:
         return [
             GameObject(
                 "Norminette Terminal",
-                '''Norminette has delivered its verdict:
-
-Error: TOO MANY FUNCTIONS (5)
-
-Someone has written underneath:
-
-"This number will haunt you."''',
-                """The keyboard is warm.
-Someone was coding here recently.
-
-Or they're still here.""",
-                """Hot electronics and fear.
-
-Mostly fear.""",
+                (
+                    "Norminette has delivered its verdict:\n\n"
+                    "Error: TOO MANY FUNCTIONS (5)\n\n"
+                    "Someone has written underneath:\n\n"
+                    '"This number will haunt you."'
+                ),
+                (
+                    "The keyboard is warm.\n"
+                    "Someone was coding here recently.\n\n"
+                    "Or they're still here."
+                ),
+                "Hot electronics and fear.\n\nMostly fear.",
             ),
             GameObject(
                 "Coffee Cup",
-                """Someone wrote \"42\" on the cup.
-
-The 4 has been aggressively crossed out.
-
-Only the 2 remains.
-
-Understandable.""",
-                """Stone cold.
-
-This coffee died hours ago.""",
+                (
+                    'Someone wrote "42" on the cup.\n\n'
+                    "The 4 has been aggressively crossed out.\n\n"
+                    "Only the 2 remains.\n\n"
+                    "Understandable."
+                ),
+                "Stone cold.\n\nThis coffee died hours ago.",
                 "Strong enough to compile your thoughts.",
             ),
             GameObject(
                 "Rubber Duck",
-                """A small yellow rubber duck sits beside the keyboard.
-
-Its blank stare suggests it has listened to several hours of debugging and knows things no duck should know.""",
-                """You squeeze the rubber duck.
-
-SQUEAK.
-
-Finally, someone responds to your debugging questions.""",
-                """It smells like rubber.
-
-The only emotionally stable thing in this room.""",
+                (
+                    "A small yellow rubber duck sits beside the keyboard.\n\n"
+                    "Its blank stare suggests it has listened to several hours "
+                    "of debugging and knows things no duck should know.\n\n"
+                    "Someone has stuck a tiny note beneath it:\n\n"
+                    '"Start where the errors are."'
+                ),
+                (
+                    "You squeeze the rubber duck.\n\n"
+                    "SQUEAK.\n\n"
+                    "Finally, someone responds to your debugging questions."
+                ),
+                (
+                    "It smells like rubber.\n\n"
+                    "The only emotionally stable thing in this room."
+                ),
             ),
             GameObject(
                 "Hammock",
-                """A hammock hangs in the corner.
-
-Its shape suggests someone recently attempted to turn \"I'll rest for ten minutes\" into a full night's sleep.""",
-                """Suspiciously warm.
-
-You decide not to investigate further.""",
-                """Energy drink,
-sleep deprivation,
-and poor time management.""",
+                (
+                    "A hammock hangs in the corner.\n\n"
+                    "Its shape suggests someone recently attempted to turn "
+                    '"I\'ll rest for ten minutes" into a full night\'s sleep.'
+                ),
+                "Suspiciously warm.\n\nYou decide not to investigate further.",
+                "Energy drink,\nsleep deprivation,\nand poor time management.",
             ),
             GameObject(
                 "Forgotten Hoodie",
-                """A black hoodie lies abandoned over a chair.
-
-Naturally, it is black.
-
-Identifying its owner among 42 students may be impossible.""",
-                """You carefully poke it.
-
-There does not appear to be a student inside.""",
+                (
+                    "A black hoodie lies abandoned over a chair.\n\n"
+                    "Naturally, it is black.\n\n"
+                    "Identifying its owner among 42 students may be impossible."
+                ),
+                (
+                    "You carefully poke it.\n\n"
+                    "There does not appear to be a student inside."
+                ),
                 "You immediately regret implementing the sniff() method.",
             ),
             GameObject(
                 "Whiteboard",
-                """The whiteboard is covered in boxes,
-arrows,
-memory addresses,
-and increasingly desperate question marks.
-
-In the center someone has written:
-
-SEGFAULT???
-
-Three arrows point toward it.
-
-None explain why.""",
-                """The marker isn't dry yet.
-
-Whoever understood this diagram may still be nearby.""",
-                """Whiteboard marker.
-
-For a brief moment you understand pointers.
-
-The feeling passes.""",
+                (
+                    "The whiteboard is covered in boxes,\n"
+                    "arrows,\n"
+                    "memory addresses,\n"
+                    "and increasingly desperate question marks.\n\n"
+                    "In the center someone has written:\n\n"
+                    "SEGFAULT???\n\n"
+                    "Three arrows point toward it.\n\n"
+                    "None explain why.\n\n"
+                    "In one clear corner, another message reads:\n\n"
+                    "ERROR → COFFEE → FAILURE\n\n"
+                    "Beneath it:\n\n"
+                    '"The natural progression of a 42 student."'
+                ),
+                (
+                    "The marker isn't dry yet.\n\n"
+                    "Whoever understood this diagram may still be nearby."
+                ),
+                (
+                    "Whiteboard marker.\n\n"
+                    "For a brief moment you understand pointers.\n\n"
+                    "The feeling passes."
+                ),
             ),
             GameObject(
                 "Plant",
-                """Somehow the plant is still alive despite being maintained by programmers.
-
-Its leaves are reaching desperately toward the window.""",
-                """The soil is completely dry.
-
-Apparently water() was never called.""",
-                """It smells like the outside world.
-
-You remember why you're trying to escape.""",
+                (
+                    "Somehow the plant is still alive despite being maintained "
+                    "by programmers.\n\n"
+                    "Its leaves are reaching desperately toward the window."
+                ),
+                "The soil is completely dry.\n\nApparently water() was never called.",
+                (
+                    "It smells like the outside world.\n\n"
+                    "You remember why you're trying to escape."
+                ),
             ),
             GameObject(
                 "Crumpled Exam Paper",
-                """You unfold the crumpled exam paper.
-
-Most of it has been furiously crossed out.
-
-At the bottom one result remains painfully visible:
-
-LEVEL 4 - FAILED
-
-Someone has written
-
-\"I WAS SO CLOSE\"
-
-underneath.""",
-                """The paper is deeply crumpled.
-
-Whoever owned this processed their feedback physically.""",
-                """Paper,
-stress,
-and the faint scent of a shattered ego.""",
+                (
+                    "You unfold the crumpled exam paper.\n\n"
+                    "Most of it has been furiously crossed out.\n\n"
+                    "At the bottom one result remains painfully visible:\n\n"
+                    "LEVEL 4 - FAILED\n\n"
+                    "Someone has written\n\n"
+                    '"I WAS SO CLOSE"\n\n'
+                    "underneath."
+                ),
+                (
+                    "The paper is deeply crumpled.\n\n"
+                    "Whoever owned this processed their feedback physically."
+                ),
+                "Paper,\nstress,\nand the faint scent of a shattered ego.",
             ),
             GameObject(
                 "Vending Machine",
-                """A vending machine stands against the wall.
-
-You don't remember there being a vending machine here before.
-
-Stranger still, it is filled almost entirely with chocolate bars.
-
-Chocolate.
-
-Next to computers.
-
-Reckless.
-
-A handwritten sign says:
-
-MAXIMUM SNACK MODE.""",
-                """The machine vibrates ominously.
-
-You decide not to press anything.
-
-You've debugged enough unfamiliar systems tonight.""",
+                (
+                    "A vending machine stands against the wall.\n\n"
+                    "You don't remember there being a vending machine here before.\n\n"
+                    "Stranger still, it is filled almost entirely with chocolate bars.\n\n"
+                    "Chocolate.\n\n"
+                    "Next to computers.\n\n"
+                    "Reckless.\n\n"
+                    "A handwritten sign says:\n\n"
+                    "MAXIMUM SNACK MODE."
+                ),
+                (
+                    "The machine vibrates ominously.\n\n"
+                    "You decide not to press anything.\n\n"
+                    "You've debugged enough unfamiliar systems tonight."
+                ),
                 "Capitalism.",
             ),
         ]
 
     def find_game_object(self, name: str) -> GameObject | None:
-        for game_object in self.room.game_objects:
+        for game_object in self.get_nearby_objects():
             if game_object.name.lower() == name.lower():
                 return game_object
         return None
 
+    def get_nearby_objects(self) -> list[GameObject]:
+        if self.location == "left":
+            return self.left_objects
+        if self.location == "right":
+            return self.right_objects
+        if self.location == "away":
+            return self.away_objects
+        return []
+
+    def look_around(self) -> None:
+        nearby_objects = self.get_nearby_objects()
+
+        if not nearby_objects:
+            print("You are facing the locked door. There are no objects here to inspect.")
+            return
+
+        print("Nearby objects:")
+        for game_object in nearby_objects:
+            print(f"  - {game_object.name}")
+
     def show_help(self) -> None:
-        print("""Available commands:
-  look <object>
-  touch <object>
-  sniff <object>
+        if self.location == "door":
+            print("""Available commands:
+  walk left
+  walk right
+  walk away
   code <number>
   help
   quit""")
+        else:
+            print("""Available commands:
+  look around
+  look at <object>
+  touch <object>
+  sniff <object>
+  walk towards door
+  help
+  quit""")
+
+    def walk(self, direction: str) -> None:
+        direction = direction.lower()
+
+        if self.location == "door":
+            if direction == "left":
+                self.location = "left"
+                print("You walk to the left side of the room.")
+            elif direction == "right":
+                self.location = "right"
+                print("You walk to the right side of the room.")
+            elif direction == "away":
+                self.location = "away"
+                print("You turn away from the door and walk across the room.")
+            else:
+                print("You can walk left, right, or away from the door.")
+        elif direction == "towards door":
+            self.location = "door"
+            print("You walk back towards the locked door.")
+        else:
+            print("Walk towards the door before choosing another direction.")
 
     def show_introduction(self) -> None:
-        print("""It is 03:42.
+        print("""┌─────────────────────────────────────────────┐
+│                                             │
+│              42 BERLIN                      │
+│                                             │
+│      MAXIMUM PRODUCTIVITY MODE              │
+│               ENABLED                       │
+│                                             │
+│             [ LOCKED ]                      │
+│                                             │
+└─────────────────────────────────────────────┘
+
+It is 03:42.
+You should have gone home hours ago.
 
 You are still at 42.
 
@@ -242,7 +301,6 @@ Somewhere in this room are the clues you need to escape the dread of coding thro
             print("Please enter a 3-digit code, for example: code 123")
             return False
 
-        self.attempts += 1
         if not self.room.check_code(int(code_text)):
             print("INCORRECT CODE. Keep exploring the room.")
             return False
@@ -276,21 +334,51 @@ You choose not to investigate.""")
         if command == "help":
             self.show_help()
             return False
+        if command == "walk":
+            if not argument:
+                print("Where would you like to walk?")
+                return False
+            self.walk(argument)
+            return False
         if command == "code":
+            if self.location != "door":
+                print("The code terminal is beside the door. You need to walk back towards it.")
+                return False
             return self.try_code(argument)
+        if command == "look" and argument.lower() == "around":
+            self.look_around()
+            return False
+        if command == "look":
+            if not argument.lower().startswith("at "):
+                print("Use 'look around' or 'look at <object>'.")
+                return False
+            argument = argument[3:].strip()
         if command in ("look", "touch", "sniff"):
             if not argument:
-                print(f"What would you like to {command}?")
+                if command == "look":
+                    print("What would you like to look at?")
+                else:
+                    print(f"What would you like to {command}?")
+                return False
+
+            if self.location == "door":
+                print("There is nothing here to inspect. Walk somewhere first.")
                 return False
 
             game_object = self.find_game_object(argument)
             if game_object is None:
-                object_names = ", ".join(self.room.get_game_object_names())
+                object_names = ", ".join(
+                    game_object.name for game_object in self.get_nearby_objects()
+                )
                 print(f"You cannot find '{argument}'. Try one of: {object_names}")
                 return False
 
-            action = getattr(game_object, command)
-            print(action())
+            if command == "look":
+                print(game_object.look())
+            elif command == "touch":
+                print(game_object.touch())
+            elif command == "sniff":
+                print(game_object.sniff())
             return False
 
         print("Unknown command. Type 'help' to see the available commands.")
