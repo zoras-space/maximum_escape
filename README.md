@@ -33,6 +33,8 @@ Run:
 python3 main.py
 ```
 
+**Tip:** Press `Tab` while typing to autocomplete available commands and nearby object names.
+
 Requires **Python 3**.
 
 ## Game Jam
