@@ -60,7 +60,7 @@ class Game:
             GameObject(
                 "Coffee Cup",
                 (
-                    'Someone wrote "42" on the cup.\n\n'
+                    'It's just your usual 42 cup. Nothing out of the ordinary.\n'
                     "The 4 has been aggressively crossed out.\n\n"
                     "Only the 2 remains.\n\n"
                     "Understandable."
@@ -101,7 +101,7 @@ class Game:
                 "Forgotten Hoodie",
                 (
                     "A black hoodie lies abandoned over a chair.\n\n"
-                    "Naturally, it is black.\n\n"
+                    "Naturally, it is black and therefore not a 42 Hoodie.\n\n"
                     "Identifying its owner among 42 students may be impossible."
                 ),
                 (
