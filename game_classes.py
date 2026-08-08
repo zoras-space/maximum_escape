@@ -1,18 +1,40 @@
+import readline
+
+
+RED = "\033[31m"
+GREEN = "\033[32m"
+YELLOW = "\033[33m"
+ORANGE = "\033[38;5;208m"
+CYAN = "\033[36m"
+BLUE = "\033[34m"
+MAGENTA = "\033[35m"
+WHITE = "\033[97m"
+GRAY = "\033[90m"
+BOLD = "\033[1m"
+RESET = "\033[0m"
+
+
 class GameObject:
-    def __init__(self, name: str, appearance: str, feel: str, smell: str) -> None:
+    def __init__(
+        self, name: str, appearance: str, feel: str, smell: str, color: str
+    ) -> None:
         self.name = name
         self.appearance = appearance
         self.feel = feel
         self.smell = smell
+        self.color = color
+
+    def get_colored_name(self) -> str:
+        return f"{self.color}{self.name}{RESET}"
 
     def look(self) -> str:
-        return f"You look at the {self.name}. {self.appearance}"
+        return f"You look at the {self.get_colored_name()}. {self.appearance}"
 
     def touch(self) -> str:
-        return f"You touch the {self.name}. {self.feel}"
+        return f"You touch the {self.get_colored_name()}. {self.feel}"
 
     def sniff(self) -> str:
-        return f"You take a deep sniff of the {self.name}. {self.smell}"
+        return f"You take a deep sniff of the {self.get_colored_name()}. {self.smell}"
 
 
 class Room:
@@ -56,17 +78,19 @@ class Game:
                     "Or they're still here."
                 ),
                 "Hot electronics and fear.\n\nMostly fear.",
+                RED,
             ),
             GameObject(
                 "Coffee Cup",
                 (
-                    'It's just your usual 42 cup. Nothing out of the ordinary.\n'
+                    "It's just your usual 42 cup. Nothing out of the ordinary.\n\n"
                     "The 4 has been aggressively crossed out.\n\n"
                     "Only the 2 remains.\n\n"
                     "Understandable."
                 ),
                 "Stone cold.\n\nThis coffee died hours ago.",
                 "Strong enough to compile your thoughts.",
+                YELLOW,
             ),
             GameObject(
                 "Rubber Duck",
@@ -86,6 +110,7 @@ class Game:
                     "It smells like rubber.\n\n"
                     "The only emotionally stable thing in this room."
                 ),
+                ORANGE,
             ),
             GameObject(
                 "Hammock",
@@ -96,6 +121,7 @@ class Game:
                 ),
                 "Suspiciously warm.\n\nYou decide not to investigate further.",
                 "Energy drink,\nsleep deprivation,\nand poor time management.",
+                CYAN,
             ),
             GameObject(
                 "Forgotten Hoodie",
@@ -109,6 +135,7 @@ class Game:
                     "There does not appear to be a student inside."
                 ),
                 "You immediately regret implementing the sniff() method.",
+                GRAY,
             ),
             GameObject(
                 "Whiteboard",
@@ -135,6 +162,7 @@ class Game:
                     "For a brief moment you understand pointers.\n\n"
                     "The feeling passes."
                 ),
+                WHITE,
             ),
             GameObject(
                 "Plant",
@@ -148,6 +176,7 @@ class Game:
                     "It smells like the outside world.\n\n"
                     "You remember why you're trying to escape."
                 ),
+                GREEN,
             ),
             GameObject(
                 "Crumpled Exam Paper",
@@ -155,7 +184,7 @@ class Game:
                     "You unfold the crumpled exam paper.\n\n"
                     "Most of it has been furiously crossed out.\n\n"
                     "At the bottom one result remains painfully visible:\n\n"
-                    "LEVEL 4 - FAILED\n\n"
+                    f"LEVEL 4 - {RED}FAILED{RESET}\n\n"
                     "Someone has written\n\n"
                     '"I WAS SO CLOSE"\n\n'
                     "underneath."
@@ -165,6 +194,7 @@ class Game:
                     "Whoever owned this processed their feedback physically."
                 ),
                 "Paper,\nstress,\nand the faint scent of a shattered ego.",
+                MAGENTA,
             ),
             GameObject(
                 "Vending Machine",
@@ -184,6 +214,7 @@ class Game:
                     "You've debugged enough unfamiliar systems tonight."
                 ),
                 "Capitalism.",
+                BLUE,
             ),
         ]
 
@@ -202,24 +233,62 @@ class Game:
             return self.away_objects
         return []
 
+    def get_completion_options(self) -> list[str]:
+        if self.location == "door":
+            return [
+                "walk left",
+                "walk right",
+                "walk away",
+                "code",
+                "help",
+                "quit",
+            ]
+
+        options = ["look around", "walk towards door", "help", "quit"]
+
+        for game_object in self.get_nearby_objects():
+            options.append(f"look at {game_object.name}")
+            options.append(f"touch {game_object.name}")
+            options.append(f"sniff {game_object.name}")
+
+        return options
+
+    def complete_command(self, text: str, state: int) -> str | None:
+        matches = []
+        for option in self.get_completion_options():
+            if option.lower().startswith(text.lower()):
+                matches.append(option)
+
+        if state < len(matches):
+            return matches[state]
+        return None
+
+    def setup_autocomplete(self) -> None:
+        readline.set_completer_delims("")
+        readline.set_completer(self.complete_command)
+        readline.parse_and_bind("tab: complete")
+
     def look_around(self) -> None:
         nearby_objects = self.get_nearby_objects()
 
         if not nearby_objects:
-            print("You are facing the locked door. There are no objects here to inspect.")
+            print(
+                f"You are facing the {ORANGE}locked door{RESET}. "
+                "There are no objects here to inspect."
+            )
             return
 
         print("Nearby objects:")
         for game_object in nearby_objects:
-            print(f"  - {game_object.name}")
+            print(f"  - {game_object.get_colored_name()}")
 
     def show_help(self) -> None:
         if self.location == "door":
-            print("""Available commands:
+            print(f"""Available commands:
   walk left
   walk right
   walk away
-  code <number>
+  {ORANGE}code <number>{RESET}
   help
   quit""")
         else:
@@ -246,22 +315,26 @@ class Game:
                 self.location = "away"
                 print("You turn away from the door and walk across the room.")
             else:
-                print("You can walk left, right, or away from the door.")
+                print(
+                    f"{ORANGE}You can only walk left, right, or away from the door.{RESET}"
+                )
         elif direction == "towards door":
             self.location = "door"
-            print("You walk back towards the locked door.")
+            print(f"You walk back towards the {ORANGE}locked door{RESET}.")
         else:
-            print("Walk towards the door before choosing another direction.")
+            print(
+                f"{ORANGE}Walk towards the door before choosing another direction.{RESET}"
+            )
 
     def show_introduction(self) -> None:
-        print("""┌─────────────────────────────────────────────┐
+        print(f"""┌─────────────────────────────────────────────┐
 │                                             │
 │              42 BERLIN                      │
 │                                             │
-│      MAXIMUM PRODUCTIVITY MODE              │
-│               ENABLED                       │
+│      {BOLD}{ORANGE}MAXIMUM PRODUCTIVITY MODE{RESET}              │
+│               {BOLD}{ORANGE}ENABLED{RESET}                       │
 │                                             │
-│             [ LOCKED ]                      │
+│             {BOLD}{ORANGE}[ LOCKED ]{RESET}                      │
 │                                             │
 └─────────────────────────────────────────────┘
 
@@ -284,11 +357,11 @@ The door does not open.
 
 A terminal beside it suddenly lights up.
 
-MAXIMUM PRODUCTIVITY MODE ENABLED.
+{BOLD}{ORANGE}MAXIMUM PRODUCTIVITY MODE ENABLED.{RESET}
 
-ENTER 3-DIGIT EXIT CODE.
+{ORANGE}ENTER 3-DIGIT EXIT CODE.{RESET}
 
-NO STUDENT LEAVES BEFORE REACHING THEIR MAXIMUM POTENTIAL.
+{ORANGE}NO STUDENT LEAVES BEFORE REACHING THEIR MAXIMUM POTENTIAL.{RESET}
 
 Fantastic.
 
@@ -298,16 +371,19 @@ Somewhere in this room are the clues you need to escape the dread of coding thro
 
     def try_code(self, code_text: str) -> bool:
         if not code_text.isdigit() or len(code_text) != 3:
-            print("Please enter a 3-digit code, for example: code 123")
+            print(
+                f"{RED}Invalid code.{RESET} "
+                "Please enter exactly 3 digits, for example: code 123"
+            )
             return False
 
         if not self.room.check_code(int(code_text)):
-            print("INCORRECT CODE. Keep exploring the room.")
+            print(f"{RED}INCORRECT CODE.{RESET} Keep exploring the room.")
             return False
 
-        print("""ACCESS GRANTED.
+        print(f"""{GREEN}{BOLD}ACCESS GRANTED.{RESET}
 
-The door clicks open.
+{GREEN}The door clicks open.{RESET}
 
 Cold night air hits your face.
 
@@ -336,13 +412,16 @@ You choose not to investigate.""")
             return False
         if command == "walk":
             if not argument:
-                print("Where would you like to walk?")
+                print(f"{RED}Missing direction.{RESET} Where would you like to walk?")
                 return False
             self.walk(argument)
             return False
         if command == "code":
             if self.location != "door":
-                print("The code terminal is beside the door. You need to walk back towards it.")
+                print(
+                    f"{ORANGE}The code terminal is beside the locked door.{RESET} "
+                    "You need to walk back towards it."
+                )
                 return False
             return self.try_code(argument)
         if command == "look" and argument.lower() == "around":
@@ -350,27 +429,40 @@ You choose not to investigate.""")
             return False
         if command == "look":
             if not argument.lower().startswith("at "):
-                print("Use 'look around' or 'look at <object>'.")
+                print(
+                    f"{RED}Invalid look command.{RESET} "
+                    "Use 'look around' or 'look at <object>'."
+                )
                 return False
             argument = argument[3:].strip()
         if command in ("look", "touch", "sniff"):
             if not argument:
                 if command == "look":
-                    print("What would you like to look at?")
+                    print(f"{RED}Missing object.{RESET} What would you like to look at?")
                 else:
-                    print(f"What would you like to {command}?")
+                    print(
+                        f"{RED}Missing object.{RESET} "
+                        f"What would you like to {command}?"
+                    )
                 return False
 
             if self.location == "door":
-                print("There is nothing here to inspect. Walk somewhere first.")
+                print(
+                    f"{ORANGE}There is nothing here to inspect.{RESET} "
+                    "Walk somewhere first."
+                )
                 return False
 
             game_object = self.find_game_object(argument)
             if game_object is None:
                 object_names = ", ".join(
-                    game_object.name for game_object in self.get_nearby_objects()
+                    game_object.get_colored_name()
+                    for game_object in self.get_nearby_objects()
                 )
-                print(f"You cannot find '{argument}'. Try one of: {object_names}")
+                print(
+                    f"{RED}You cannot find '{argument}'.{RESET} "
+                    f"Try one of: {object_names}"
+                )
                 return False
 
             if command == "look":
@@ -381,10 +473,14 @@ You choose not to investigate.""")
                 print(game_object.sniff())
             return False
 
-        print("Unknown command. Type 'help' to see the available commands.")
+        print(
+            f"{RED}Unknown command.{RESET} "
+            "Type 'help' to see the available commands."
+        )
         return False
 
     def run(self) -> None:
+        self.setup_autocomplete()
         self.show_introduction()
 
         while True:
