@@ -110,7 +110,7 @@ class Game:
                     "It smells like rubber.\n\n"
                     "The only emotionally stable thing in this room."
                 ),
-                ORANGE,
+                YELLOW,
             ),
             GameObject(
                 "Hammock",
