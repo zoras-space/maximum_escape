@@ -29,7 +29,7 @@ class Room:
             names.append(object.name)
         return names
 
-class Room:
+class Game:
     def __init__(self):
         self.attempts = 0
         objects = self.create_objects
