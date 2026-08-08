@@ -1,5 +1,7 @@
 import readline
 
+from ascii_art import ASCII_ART, TITLE_ART
+
 
 RED = "\033[31m"
 GREEN = "\033[32m"
@@ -29,7 +31,8 @@ class GameObject:
         return f"{self.color}{self.name}{RESET}"
 
     def look(self) -> str:
-        return f"You look at the {self.get_colored_name()}. {self.appearance}"
+        art = ASCII_ART[self.name].strip("\n")
+        return f"{art}\n\nYou look at the {self.get_colored_name()}. {self.appearance}"
 
     def touch(self) -> str:
         return f"You touch the {self.get_colored_name()}. {self.feel}"
@@ -328,6 +331,8 @@ class Game:
             )
 
     def show_introduction(self) -> None:
+        print(TITLE_ART.strip("\n"))
+        print(ASCII_ART["Door"].strip("\n"))
         print(f"""┌─────────────────────────────────────────────┐
 │                                             │
 │              42 BERLIN                      │
