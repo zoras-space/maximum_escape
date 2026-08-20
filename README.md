@@ -1,4 +1,4 @@
-# Maximum Productivity
+# Maximum Escape
 
 A terminal-based escape room created for the **42 Berlin Game Jam 2026**.
 
@@ -18,13 +18,25 @@ The game is entirely text-based.
 
 Read the descriptions and type commands to interact with the environment. Explore carefully — useful clues may be hidden in seemingly ordinary objects.
 
+## Requirements
+
+- **Python 3**
+- **Linux/macOS:** Python's `readline` module is normally included, so no additional setup is required.
+- **Windows:** Install the compatible `pyreadline3` package before running the game:
+
+  ```powershell
+  py -m pip install pyreadline3
+  ```
+
+  Alternatively, run the game in a Linux environment such as WSL.
+
 ## Run the Game
 
 Clone the repository:
 
 ```bash
-git clone <REPOSITORY-URL>
-cd <REPOSITORY-NAME>
+git clone https://github.com/zoras-space/maximum_escape.git
+cd maximum_escape
 ```
 
 Run:
@@ -34,8 +46,6 @@ python3 main.py
 ```
 
 **Tip:** Press `Tab` while typing to autocomplete available commands and nearby object names.
-
-Requires **Python 3**.
 
 ## Game Jam
 
