@@ -270,7 +270,13 @@ class Game:
     def setup_autocomplete(self) -> None:
         readline.set_completer_delims("")
         readline.set_completer(self.complete_command)
-        readline.parse_and_bind("tab: complete")
+        backend = getattr(readline, "backend", None)
+        if backend == "editline" or (
+            backend is None and "libedit" in (readline.__doc__ or "")
+        ):
+            readline.parse_and_bind("bind ^I rl_complete")
+        else:
+            readline.parse_and_bind("tab: complete")
 
     def look_around(self) -> None:
         nearby_objects = self.get_nearby_objects()
